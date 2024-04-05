@@ -64,11 +64,18 @@ workflow CLUSTER_SPLITTER {
     metadata is merged within nextflow we are using the 'id' field from our meta map. As this will
     match the header in the prepared metadata file
 
+    Replace ID name (REPLACE_ID_NAME) is set as we will rename the first header of the locidex merged output to match what we
+    are creating when we aggreagate the metadata while also keeping in line with nf-core satandards. As we must
+    specify and ID column in arborator to merge the two datasets on, however locidex merge outputs a header called 'sample_id'
+    that we cannot change
+
     Partition column (PARTITION_COLUMN) is set to the first metadata field in the defined in nextflow_schema.json.
     as it is a string constant it will be listed here and it is marked as mandatory.
     */
     ID_COLUMN = "id"
-    PARTITION_COLUMN = "md_field_1"
+    REPLACE_ID_NAME = "sample_id"
+    PARTITION_COLUMN = "md_1"
+
 
 
     ch_versions = Channel.empty()
@@ -78,9 +85,10 @@ workflow CLUSTER_SPLITTER {
     input = Channel.fromSamplesheet("input")
 
     // Merge allele profiles
+    replace_vals = Channel.value(tuple(REPLACE_ID_NAME, ID_COLUMN))
     profiles_merged = LOCIDEX_MERGE(input.map{
         meta, alleles -> alleles
-    }.collect())
+    }.collect(), replace_vals)
     ch_versions = ch_versions.mix(profiles_merged.versions)
 
     merged_metadata = MAP_TO_TSV(input.map {
@@ -93,18 +101,16 @@ workflow CLUSTER_SPLITTER {
         exit 1, "${params.ar_config} does not exist. Exiting the pipeline now"
     }
 
+    arbys_out = ARBORATOR(
+        merged_profiles=profiles_merged.combined_profiles,
+        metadata=merged_metadata,
+        configuration_file=arborator_config,
+        id_column=ID_COLUMN,
+        partition_col=PARTITION_COLUMN,
+        thresholds=params.ar_thresholds)
 
-    merged_metadata.view()
-    //arbys_out = ARBORATOR(
-    //    merged_profiles=profiles_merged.combined_profiles,
-    //    metadata=merged_metadata,
-    //    configuration_file=arborator_config,
-    //    id_column=ID_COLUMN,
-    //    partition_col=PARTITION_COLUMN,
-    //    thresholds=params.ar_thresholds)
-//
-    //ch_versions = ch_versions.mix(arbys_out.versions)
-//
+    ch_versions = ch_versions.mix(arbys_out.versions)
+
 
 
     //IRIDA_NEXT_OUTPUT (
