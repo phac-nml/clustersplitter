@@ -8,8 +8,8 @@ process ARBORATOR {
     label 'process_high'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/locidex:0.1.1--pyhdfd78af_0' :
-    'quay.io/biocontainers/locidex:0.1.1--pyhdfd78af_0' }"
+    'https://depot.galaxyproject.org/singularity/arborator%3A1.0.0--pyhdfd78af_1' :
+    'quay.io/biocontainers/arborator:1.0.0--pyhdfd78af_1' }"
 
 
     input:

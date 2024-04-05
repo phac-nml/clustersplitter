@@ -45,7 +45,7 @@ def prepareFilePath(String filep, GString debug_msg){
     // Rerturns null if a file is not valid
     def return_path = null
     if(filep){
-        file_in = path(filep)
+        file_in = file(filep)
         if(file_in.exists()){
             return_path = file_in
             log.debug debug_msg
@@ -94,15 +94,17 @@ workflow CLUSTER_SPLITTER {
     }
 
 
-    arbys_out = ARBORATOR(merged_profiles=profiles_merged,
-        metadata=merged_metadata,
-        configuration_file=arborator_config,
-        id_column=ID_COLUMN,
-        partition_col=PARTITION_COLUMN,
-        thresholds=params.ar_thresholds)
-
-    ch_versions = ch_versions.mix(arbys_out.versions)
-
+    merged_metadata.view()
+    //arbys_out = ARBORATOR(
+    //    merged_profiles=profiles_merged.combined_profiles,
+    //    metadata=merged_metadata,
+    //    configuration_file=arborator_config,
+    //    id_column=ID_COLUMN,
+    //    partition_col=PARTITION_COLUMN,
+    //    thresholds=params.ar_thresholds)
+//
+    //ch_versions = ch_versions.mix(arbys_out.versions)
+//
 
 
     //IRIDA_NEXT_OUTPUT (

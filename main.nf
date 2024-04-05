@@ -36,8 +36,8 @@ include { CLUSTER_SPLITTER } from './workflows/cluster_splitter'
 //
 // WORKFLOW: Run main phac-nml/iridanextexample analysis pipeline
 //
-workflow PHACNML_IRIDANEXT {
-    IRIDANEXT ()
+workflow PHACNML_CLUSTER_SPLITTER {
+    CLUSTER_SPLITTER ()
 }
 
 /*
@@ -51,7 +51,7 @@ workflow PHACNML_IRIDANEXT {
 // See: https://github.com/nf-core/rnaseq/issues/619
 //
 workflow {
-    PHACNML_IRIDANEXT ()
+    PHACNML_CLUSTER_SPLITTER ()
 }
 
 /*
