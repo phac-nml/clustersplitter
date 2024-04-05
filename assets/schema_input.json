@@ -1,0 +1,51 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://raw.githubusercontent.com/phac-nml/iridanextexample/main/assets/schema_input.json",
+    "title": "phac-nml/iridanextexample pipeline - params.input schema",
+    "description": "Schema for the file provided with params.input",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "sample": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "meta": ["id"],
+                "unique": true,
+                "errorMessage": "Sample name must be provided and cannot contain spaces"
+            },
+            "mlst_alleles": {
+                "type": "string",
+                "format": "file-path",
+                "pattern": "^\\S+\\.mlst\\.json(\\.gz)?$",
+                "errorMessage": "MLST JSON file from locidex report, cannot contain spaces and must have the extension: '.mlst.json' or '.mlst.json.gz'"
+            },
+            "md_field_1": {
+                "type": "string",
+                "description": "A field to partition data on, this field is mandatory",
+                "meta": ["md_1"]
+            },
+            "md_field_2": {
+                "type": "string",
+                "description": "An optional field to add contextual data to the final trees which are output and rendered.",
+                "meta": ["md_2"]
+            },
+            "md_field_3": {
+                "type": "string",
+                "description": "An optional field to add contextual data to the final trees which are output and rendered.",
+                "meta": ["md_3"]
+            },
+            "md_field_4": {
+                "type": "string",
+                "description": "An optional field to add contextual data to the final trees which are output and rendered.",
+                "meta": ["md_4"]
+            },
+            "md_field_5": {
+                "type": "string",
+                "description": "An optional field to add contextual data to the final trees which are output and rendered.",
+                "meta": ["md_5"]
+            }
+        },
+        "required": ["sample", "mlst_alleles", "md_field_1"]
+    }
+}
