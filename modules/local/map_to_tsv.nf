@@ -6,6 +6,7 @@
 
 process MAP_TO_TSV {
     tag "Aggregating data for TSV"
+    cache "false"
 
 
     input:

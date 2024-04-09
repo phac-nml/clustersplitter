@@ -21,6 +21,7 @@ include { IRIDA_NEXT_OUTPUT    } from '../modules/local/iridanextoutput/main'
 include { LOCIDEX_MERGE } from '../modules/local/locidex/merge/main'
 include { MAP_TO_TSV } from '../modules/local/map_to_tsv.nf'
 include { ARBORATOR } from '../modules/local/arborator/main'
+include { ARBOR_VIEW } from '../modules/local/arborview'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,6 +87,7 @@ workflow CLUSTER_SPLITTER {
 
     // Merge allele profiles
     replace_vals = Channel.value(tuple(REPLACE_ID_NAME, ID_COLUMN))
+
     profiles_merged = LOCIDEX_MERGE(input.map{
         meta, alleles -> alleles
     }.collect(), replace_vals)
@@ -111,6 +113,17 @@ workflow CLUSTER_SPLITTER {
 
     ch_versions = ch_versions.mix(arbys_out.versions)
 
+    trees = arbys_out.trees.flatten().map {
+        tuple(it.getParent().getBaseName(), it)
+    }
+
+    metadata_for_trees = arbys_out.metadata.flatten().map{
+        tuple(it.getParent().getBaseName(), it)
+    }
+
+    trees_meta = trees.join(metadata_for_trees)
+    tree_html = file(params.av_html)
+    ARBOR_VIEW(trees_meta, tree_html)
 
 
     //IRIDA_NEXT_OUTPUT (

@@ -1,0 +1,5 @@
+National Outbreak Code	Patient Age (years)	serovar	Source Type	count_md_3_nan	md_2	count_md_5_nan	md_1	count_members	md_5	median_dist	count_outliers	count_md_4_nan	md_4	mean_dist	min_dist	md_3	count_md_2_nan	max_dist
+				2	nan	2	1	2	nan	3.0	0	2	nan	3.0	3.0	nan	2	3.0
+				2	nan	2	2	2	nan	2.0	0	2	nan	2.0	2.0	nan	2	2.0
+				1	nan	1	3	1	nan	0	0	1	nan	0	0	nan	1	0
+				1	nan	1	unassociated	1	nan	0	0	1	nan	0	0	nan	1	0

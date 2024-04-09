@@ -1,0 +1,76 @@
+nextflow_pipeline {
+    name "Integration Tests for Cluster Splitting"
+    script "main.nf"
+
+    test("Small-scale test of full pipeline"){
+        tag "pipeline"
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet.csv"
+                outdir = "results"
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // Check merged profiles
+            def actual_profile_tsv = path("$launchDir/results/merged/profile.tsv")
+            def expected_profile_tsv = path("$baseDir/tests/data/profiles/merged_profiles.tsv")
+            assert actual_profile_tsv.text == expected_profile_tsv.text
+
+            // Check aggregated metadata
+            def actual_metadata = path("$launchDir/results/metadata/aggregated_data.tsv")
+            def expected_metadata = path("$baseDir/tests/data/metadata/expected_merged_data.tsv")
+            assert actual_metadata.text == expected_metadata.text
+
+            // Check aborator outputs
+
+            // Arborator files
+            def comp_files = [
+                Tuple(path("$launchDir/results/arborator/cluster_summary.tsv"), path("$baseDir/tests/data/arborator/cluster_summary.tsv")),
+                Tuple(path("$launchDir/results/arborator/metadata.excluded.tsv"), path("$baseDir/tests/data/arborator/metadata.excluded.tsv")),
+                Tuple(path("$launchDir/results/arborator/metadata.included.tsv"), path("$baseDir/tests/data/arborator/metadata.included.tsv")),
+                Tuple(path("$launchDir/results/arborator/threshold_map.json"), path("$baseDir/tests/data/arborator/threshold_map.json")),
+                Tuple(path("$launchDir/results/arborator/run.json"), path("$baseDir/tests/data/arborator/run.json")),
+                Tuple(path("$launchDir/results/arborator/1/clusters.tsv"), path("$baseDir/tests/data/arborator/1/clusters.tsv")),
+                Tuple(path("$launchDir/results/arborator/1/loci.summary.tsv"), path("$baseDir/tests/data/arborator/1/loci.summary.tsv")),
+                Tuple(path("$launchDir/results/arborator/1/matrix.pq"), path("$baseDir/tests/data/arborator/1/matrix.pq")),
+                Tuple(path("$launchDir/results/arborator/1/matrix.tsv"), path("$baseDir/tests/data/arborator/1/matrix.tsv")),
+                Tuple(path("$launchDir/results/arborator/1/metadata.tsv"), path("$baseDir/tests/data/arborator/1/metadata.tsv")),
+                Tuple(path("$launchDir/results/arborator/1/outliers.tsv"), path("$baseDir/tests/data/arborator/1/outliers.tsv")),
+                Tuple(path("$launchDir/results/arborator/1/profile.tsv"), path("$baseDir/tests/data/arborator/1/profile.tsv")),
+                Tuple(path("$launchDir/results/arborator/1/tree.nwk"), path("$baseDir/tests/data/arborator/1/tree.nwk")),
+                Tuple(path("$launchDir/results/arborator/2/clusters.tsv"), path("$baseDir/tests/data/arborator/2/clusters.tsv")),
+                Tuple(path("$launchDir/results/arborator/2/loci.summary.tsv"), path("$baseDir/tests/data/arborator/2/loci.summary.tsv")),
+                Tuple(path("$launchDir/results/arborator/2/matrix.pq"), path("$baseDir/tests/data/arborator/2/matrix.pq")),
+                Tuple(path("$launchDir/results/arborator/2/matrix.tsv"), path("$baseDir/tests/data/arborator/2/matrix.tsv")),
+                Tuple(path("$launchDir/results/arborator/2/metadata.tsv"), path("$baseDir/tests/data/arborator/2/metadata.tsv")),
+                Tuple(path("$launchDir/results/arborator/2/outliers.tsv"), path("$baseDir/tests/data/arborator/2/outliers.tsv")),
+                Tuple(path("$launchDir/results/arborator/2/profile.tsv"), path("$baseDir/tests/data/arborator/2/profile.tsv")),
+                Tuple(path("$launchDir/results/arborator/2/tree.nwk"), path("$baseDir/tests/data/arborator/2/tree.nwk")),
+                Tuple(path("$launchDir/results/arborator/3/metadata.tsv"), path("$baseDir/tests/data/arborator/3/metadata.tsv")),
+                Tuple(path("$launchDir/results/arborator/3/profile.tsv"), path("$baseDir/tests/data/arborator/3/profile.tsv")),
+                Tuple(path("$launchDir/results/arborator/unassociated/metadata.tsv"), path("$baseDir/tests/data/arborator/unassociated/metadata.tsv")),
+                Tuple(path("$launchDir/results/arborator/unassociated/profile.tsv"), path("$baseDir/tests/data/arborator/unassociated/profile.tsv"))]
+
+            comp_files.each{
+                assert it[0].text == it[1].text
+            }
+
+
+            // Test ArborView outputs
+            def expected_tree_1 = path("$baseDir/tests/data/arborview/expected_1.html")
+            def expected_tree_2 = path("$baseDir/tests/data/arborview/expected_2.html")
+
+            def actual_tree_1 = path("$launchDir/results/arborview/1_arborview.html")
+            def actual_tree_2 = path("$launchDir/results/arborview/2_arborview.html")
+
+            assert expected_tree_1.text = actual_tree_1.text
+            assert expected_tree_2.text = actual_tree_2.text
+
+
+        }
+    }
+}

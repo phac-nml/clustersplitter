@@ -21,7 +21,8 @@ process ARBORATOR {
     val thresholds // String of thresholds e.g. 10,9,8,7,6,5,4,3,2,1
 
     output:
-    path("${prefix}/*/*"), emit: split_groupds
+    path("${prefix}/*/tree.nwk"), emit: trees, optional: true
+    path("${prefix}/*/metadata.tsv"), emit: metadata, optional: true
     path("${prefix}/cluster_summary.tsv"), emit: cluster_summary
     path("${prefix}/metadata.excluded.tsv"), emit: metadata_exluded
     path("${prefix}/metadata.included.tsv"), emit: metadata_included

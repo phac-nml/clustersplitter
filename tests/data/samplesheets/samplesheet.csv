@@ -1,0 +1,7 @@
+sample,mlst_alleles,md_1
+S1,./tests/data/profiles/S1.mlst.json,1
+S2,./tests/data/profiles/S2.mlst.json,1
+S3,./tests/data/profiles/S3.mlst.json,2
+S4,./tests/data/profiles/S4.mlst.json,2
+S5,./tests/data/profiles/S5.mlst.json,3
+S6,./tests/data/profiles/S6.mlst.json,unassociated
