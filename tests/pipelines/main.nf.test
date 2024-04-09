@@ -67,8 +67,8 @@ nextflow_pipeline {
             def actual_tree_1 = path("$launchDir/results/arborview/1_arborview.html")
             def actual_tree_2 = path("$launchDir/results/arborview/2_arborview.html")
 
-            assert expected_tree_1.text = actual_tree_1.text
-            assert expected_tree_2.text = actual_tree_2.text
+            assert expected_tree_1.text == actual_tree_1.text
+            assert expected_tree_2.text == actual_tree_2.text
 
 
         }
