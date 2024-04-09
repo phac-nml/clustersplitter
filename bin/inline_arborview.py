@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Add data to existing points, generating a page with the data embedded in the HTML page.
 
