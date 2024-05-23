@@ -42,7 +42,7 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 
 
 
-def prepareFilePath(String filep, GString debug_msg){
+def prepareFilePath(String filep, String debug_msg){
     // Rerturns null if a file is not valid
     def return_path = null
     if(filep){
