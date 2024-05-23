@@ -98,7 +98,7 @@ workflow CLUSTER_SPLITTER {
     }.collect())
 
 
-    arborator_config = prepareFilePath(params.ar_config, "error")
+    arborator_config = prepareFilePath("https://raw.githubusercontent.com/phac-nml/clustersplitter/tests/update/tests/data/configs/config.json", "error")
     if(!arborator_config){
         exit 1, "error"
     }
