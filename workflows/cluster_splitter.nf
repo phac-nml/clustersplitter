@@ -98,7 +98,7 @@ workflow CLUSTER_SPLITTER {
     }.collect())
 
 
-    arborator_config = prepareFilePath(params.ar_config, "error")
+    arborator_config = prepareFilePath(params.ar_config, "Selecting ${params.ar_config} for --ar_config")
     if(!arborator_config){
         exit 1, "${params.ar_config} does not exist. Exiting the pipeline now"
     }
