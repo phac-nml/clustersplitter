@@ -102,7 +102,7 @@ workflow CLUSTER_SPLITTER {
     if(!arborator_config){
         exit 1, "${params.ar_config} does not exist. Exiting the pipeline now"
     }
-
+/*
     arbys_out = ARBORATOR(
         merged_profiles=profiles_merged.combined_profiles,
         metadata=merged_metadata,
@@ -130,7 +130,7 @@ workflow CLUSTER_SPLITTER {
     //    samples_data=ch_simplified_jsons
     //)
     //ch_versions = ch_versions.mix(IRIDA_NEXT_OUTPUT.out.versions)
-
+*/
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
