@@ -97,12 +97,12 @@ workflow CLUSTER_SPLITTER {
         meta, alleles -> meta
     }.collect())
 
-/*
-    arborator_config = prepareFilePath(params.ar_config, "Selecting ${params.ar_config} for --ar_config")
+
+    arborator_config = prepareFilePath(params.ar_config, "error")
     if(!arborator_config){
         exit 1, "${params.ar_config} does not exist. Exiting the pipeline now"
     }
-
+/*
     arbys_out = ARBORATOR(
         merged_profiles=profiles_merged.combined_profiles,
         metadata=merged_metadata,
