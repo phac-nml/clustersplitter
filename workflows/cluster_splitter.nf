@@ -41,23 +41,6 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 */
 
 
-
-def prepareFilePath(String filep, GString debug_msg){
-    // Rerturns null if a file is not valid
-    def return_path = null
-    if(filep){
-        file_in = file(filep) // for some reason using path here does not work, but file does...
-        if(file_in.exists()){
-            return_path = file_in
-            log.debug debug_msg
-        }
-    }else{
-        return_path = []
-    }
-
-    return return_path // empty value if file argument is null
-}
-
 workflow CLUSTER_SPLITTER {
 
     /*
@@ -77,8 +60,6 @@ workflow CLUSTER_SPLITTER {
     REPLACE_ID_NAME = "sample_id"
     PARTITION_COLUMN = "md_1"
 
-
-
     ch_versions = Channel.empty()
 
     // Create a new channel of metadata from a sample sheet
@@ -97,10 +78,9 @@ workflow CLUSTER_SPLITTER {
         meta, alleles -> meta
     }.collect())
 
-
-    arborator_config = prepareFilePath(params.ar_config, "Selecting ${params.ar_config} for --ar_config")
-    if(!arborator_config){
-        exit 1, "${params.ar_config} does not exist. Exiting the pipeline now"
+    arborator_config = file(params.ar_config)
+    if(!arborator_config.exists()){
+        error("The Arborator config file ${params.ar_config} does not exist.")
     }
 
     arbys_out = ARBORATOR(
@@ -125,7 +105,6 @@ workflow CLUSTER_SPLITTER {
     tree_html = file(params.av_html)
     ARBOR_VIEW(trees_meta, tree_html)
 
-
     //IRIDA_NEXT_OUTPUT (
     //    samples_data=ch_simplified_jsons
     //)
@@ -136,22 +115,6 @@ workflow CLUSTER_SPLITTER {
     )
 }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.dump_parameters(workflow, params)
-    NfcoreTemplate.summary(workflow, params, log)
-    if (params.hook_url) {
-        NfcoreTemplate.IM_notification(workflow, params, summary_params, projectDir, log)
-    }
-}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
