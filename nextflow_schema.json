@@ -23,6 +23,11 @@
             "description": "",
             "default": "",
             "properties": {
+                "partition_column": {
+                    "type": "string",
+                    "default": "outbreak",
+                    "description": "The column used to partition clusters. All samples with the same value in this column will be partitioned into the same group."
+                },
                 "ar_config": {
                     "type": "string",
                     "default": "tests/data/configs/config.json"
