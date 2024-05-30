@@ -58,13 +58,27 @@ workflow CLUSTER_SPLITTER {
     */
     ID_COLUMN = "id"
     REPLACE_ID_NAME = "sample_id"
-    PARTITION_COLUMN = "md_1"
+    PARTITION_COLUMN = "metadata_1"
 
     ch_versions = Channel.empty()
 
     // Create a new channel of metadata from a sample sheet
     // NB: `input` corresponds to `params.input` and associated sample sheet schema
     input = Channel.fromSamplesheet("input")
+
+    metadata_headers = Channel.of(
+        tuple(
+            params.metadata_1_header, params.metadata_2_header,
+            params.metadata_3_header, params.metadata_4_header,
+            params.metadata_5_header, params.metadata_6_header,
+            params.metadata_7_header, params.metadata_8_header)
+        )
+
+    metadata_rows = input.map{
+        meta, mlst_files -> tuple(meta.id,
+        meta.metadata_1, meta.metadata_2, meta.metadata_3, meta.metadata_4,
+        meta.metadata_5, meta.metadata_6, meta.metadata_7, meta.metadata_8)
+    }.toList()
 
     // Merge allele profiles
     replace_vals = Channel.value(tuple(REPLACE_ID_NAME, ID_COLUMN))
