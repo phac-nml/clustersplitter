@@ -3,15 +3,15 @@
 */
 
 process MAP_TO_TSV {
-    tag "Aggregating data for TSV"
-    cache "false"
+    tag "aggregate_tsv"
+    label 'process_single'
 
     input:
-    val(metadata_headers)
-    val(metadata_rows) // [[id: stuff], [id: more_stuff]]
+    val metadata_headers
+    val metadata_rows
 
     output:
-    path output_place
+    path(output_place), emit: tsv_path
 
     exec:
     def output_file = "aggregated_data.tsv"

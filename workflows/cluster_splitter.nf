@@ -84,7 +84,7 @@ workflow CLUSTER_SPLITTER {
     }.collect())
     ch_versions = ch_versions.mix(profiles_merged.versions)
 
-    merged_metadata = MAP_TO_TSV(metadata_headers, metadata_rows)
+    merged_metadata = MAP_TO_TSV(metadata_headers, metadata_rows).tsv_path
 
     arborator_config = file(params.ar_config)
     if(!arborator_config.exists()){
