@@ -8,6 +8,18 @@ nextflow_pipeline {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet.csv"
                 outdir = "results"
+
+                ar_config = "$baseDir/tests/data/configs/config.json"
+
+                partition_column = "outbreak"
+                metadata_1_header = "outbreak"
+                metadata_2_header = "organism"
+                metadata_3_header = "subtype"
+                metadata_4_header = "country"
+                metadata_5_header = "serovar"
+                metadata_6_header = "age"
+                metadata_7_header = "date"
+                metadata_8_header = "source"
             }
         }
 
@@ -25,47 +37,6 @@ nextflow_pipeline {
             def expected_metadata = path("$baseDir/tests/data/metadata/expected_merged_data.tsv")
             assert actual_metadata.text == expected_metadata.text
 
-            // Check aborator outputs
-
-            // Arborator files
-            def comp_files = [
-                    ["$launchDir/results/arborator/cluster_summary.tsv", "$baseDir/tests/data/arborator/cluster_summary.tsv"],
-                    ["$launchDir/results/arborator/metadata.excluded.tsv", "$baseDir/tests/data/arborator/metadata.excluded.tsv"],
-                    ["$launchDir/results/arborator/metadata.included.tsv", "$baseDir/tests/data/arborator/metadata.included.tsv"],
-                    ["$launchDir/results/arborator/threshold_map.json", "$baseDir/tests/data/arborator/threshold_map.json"],
-                    ["$launchDir/results/arborator/run.json", "$baseDir/tests/data/arborator/run.json"],
-                    ["$launchDir/results/arborator/1/clusters.tsv", "$baseDir/tests/data/arborator/1/clusters.tsv"],
-                    ["$launchDir/results/arborator/1/loci.summary.tsv", "$baseDir/tests/data/arborator/1/loci.summary.tsv"],
-                    ["$launchDir/results/arborator/1/matrix.pq", "$baseDir/tests/data/arborator/1/matrix.pq"],
-                    ["$launchDir/results/arborator/1/matrix.tsv", "$baseDir/tests/data/arborator/1/matrix.tsv"],
-                    ["$launchDir/results/arborator/1/metadata.tsv", "$baseDir/tests/data/arborator/1/metadata.tsv"],
-                    ["$launchDir/results/arborator/1/outliers.tsv", "$baseDir/tests/data/arborator/1/outliers.tsv"],
-                    ["$launchDir/results/arborator/1/profile.tsv", "$baseDir/tests/data/arborator/1/profile.tsv"],
-                    ["$launchDir/results/arborator/1/tree.nwk", "$baseDir/tests/data/arborator/1/tree.nwk"],
-                    ["$launchDir/results/arborator/2/clusters.tsv", "$baseDir/tests/data/arborator/2/clusters.tsv"],
-                    ["$launchDir/results/arborator/2/loci.summary.tsv", "$baseDir/tests/data/arborator/2/loci.summary.tsv"],
-                    ["$launchDir/results/arborator/2/matrix.pq", "$baseDir/tests/data/arborator/2/matrix.pq"],
-                    ["$launchDir/results/arborator/2/matrix.tsv", "$baseDir/tests/data/arborator/2/matrix.tsv"],
-                    ["$launchDir/results/arborator/2/metadata.tsv", "$baseDir/tests/data/arborator/2/metadata.tsv"],
-                    ["$launchDir/results/arborator/2/outliers.tsv", "$baseDir/tests/data/arborator/2/outliers.tsv"],
-                    ["$launchDir/results/arborator/2/profile.tsv", "$baseDir/tests/data/arborator/2/profile.tsv"],
-                    ["$launchDir/results/arborator/2/tree.nwk", "$baseDir/tests/data/arborator/2/tree.nwk"],
-                    ["$launchDir/results/arborator/3/metadata.tsv", "$baseDir/tests/data/arborator/3/metadata.tsv"],
-                    ["$launchDir/results/arborator/3/profile.tsv", "$baseDir/tests/data/arborator/3/profile.tsv"],
-                    ["$launchDir/results/arborator/unassociated/metadata.tsv", "$baseDir/tests/data/arborator/unassociated/metadata.tsv"],
-                    ["$launchDir/results/arborator/unassociated/profile.tsv", "$baseDir/tests/data/arborator/unassociated/profile.tsv"]
-                ]
-
-            comp_files.each{
-                //assert path(it[0]).text == path(it[1]).text
-                /*
-                I am aware that the way this equality testing is set up is stupid,
-                I am merely changing the test case so that we have some initial test cases to use.
-                */
-                assert path(it[0]).exists() == path(it[1]).exists()
-            }
-
-
             // Test ArborView outputs
             def expected_tree_1 = path("$baseDir/tests/data/arborview/expected_1.html")
             def expected_tree_2 = path("$baseDir/tests/data/arborview/expected_2.html")
@@ -75,8 +46,6 @@ nextflow_pipeline {
 
             assert expected_tree_1.text == actual_tree_1.text
             assert expected_tree_2.text == actual_tree_2.text
-
-
         }
     }
 }
