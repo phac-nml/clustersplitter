@@ -113,11 +113,6 @@ workflow CLUSTER_SPLITTER {
     tree_html = file(params.av_html)
     ARBOR_VIEW(trees_meta, tree_html)
 
-    //IRIDA_NEXT_OUTPUT (
-    //    samples_data=ch_simplified_jsons
-    //)
-    //ch_versions = ch_versions.mix(IRIDA_NEXT_OUTPUT.out.versions)
-
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
