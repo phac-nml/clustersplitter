@@ -1,7 +1,7 @@
-sample,mlst_alleles,md_1
-S1,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S1.mlst.json,1
-S2,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S2.mlst.json,1
-S3,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S3.mlst.json,2
-S4,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S4.mlst.json,2
-S5,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S5.mlst.json,3
-S6,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S6.mlst.json,unassociated
+sample,mlst_alleles,metadata_1,metadata_2,metadata_3,metadata_4,metadata_5,metadata_6,metadata_7,metadata_8
+S1,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S1.mlst.json,1,"Escherichia coli","EHEC/STEC","Canada","O157:H7",21,"2024/05/30","beef"
+S2,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S2.mlst.json,1,"Escherichia coli","EHEC/STEC","The United States","O157:H7",55,"2024/05/21","milk"
+S3,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S3.mlst.json,2,"Escherichia coli","EPEC","France","O125",14,"2024/04/30","cheese"
+S4,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S4.mlst.json,2,"Escherichia coli","EPEC","France","O125",35,"2024/04/22","cheese"
+S5,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S5.mlst.json,3,"Escherichia coli","EAEC","Canada","O126:H27",61,"2012/09/01","milk"
+S6,https://raw.githubusercontent.com/phac-nml/clustersplitter/dev/tests/data/profiles/S6.mlst.json,unassociated,"Escherichia coli","EAEC","Canada","O111:H21",43,"2011/12/25","fruit"
