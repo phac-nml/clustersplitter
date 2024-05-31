@@ -20,6 +20,7 @@
         },
 
         "linelist_columns":{
+            "sample":{"data_type": "None","label":"Sample","default":"","display":"True"},
             "outbreak":{"data_type": "None","label":"National Outbreak Code","default":"","display":"True"},
             "organism":{"data_type": "None","label":"Organism","default":"","display":"True"},
             "subtype":{"data_type": "None","label":"Subtype","default":"","display":"True"},
@@ -28,6 +29,5 @@
             "age":{"data_type": "desc_stats","label":"Patient Age (years)","default":"","display":"True"},
             "date":{"data_type": "min_max","label":"Date","default":"","display":"True"},
             "source":{"data_type": "categorical","label":"Source Type","default":"","display":"True"}
-        }
-    
+        }    
     }
