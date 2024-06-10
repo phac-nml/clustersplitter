@@ -66,7 +66,7 @@ workflow CLUSTER_SPLITTER {
 
     metadata_headers = Channel.of(
         tuple(
-            ID_COLUMN,
+            ID_COLUMN, params.metadata_partition_name,
             params.metadata_1_header, params.metadata_2_header,
             params.metadata_3_header, params.metadata_4_header,
             params.metadata_5_header, params.metadata_6_header,
@@ -74,7 +74,7 @@ workflow CLUSTER_SPLITTER {
         )
 
     metadata_rows = input.map{
-        meta, mlst_files -> tuple(meta.id,
+        meta, mlst_files -> tuple(meta.id, meta.metadata_partition,
         meta.metadata_1, meta.metadata_2, meta.metadata_3, meta.metadata_4,
         meta.metadata_5, meta.metadata_6, meta.metadata_7, meta.metadata_8)
     }.toList()
@@ -96,7 +96,7 @@ workflow CLUSTER_SPLITTER {
         metadata=merged_metadata,
         configuration_file=arborator_config,
         id_column=ID_COLUMN,
-        partition_col=params.partition_column,
+        partition_col=params.metadata_partition_name,
         thresholds=params.ar_thresholds)
 
     ch_versions = ch_versions.mix(arbys_out.versions)

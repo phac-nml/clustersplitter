@@ -1,7 +1,7 @@
-sample	outbreak	organism	subtype	country	serovar	age	date	source
-S1	1	Escherichia coli	EHEC/STEC	Canada	O157:H7	21	2024/05/30	beef
-S2	1	Escherichia coli	EHEC/STEC	The United States	O157:H7	55	2024/05/21	milk
-S3	2	Escherichia coli	EPEC	France	O125	14	2024/04/30	cheese
-S4	2	Escherichia coli	EPEC	France	O125	35	2024/04/22	cheese
-S5	3	Escherichia coli	EAEC	Canada	O126:H27	61	2012/09/01	milk
-S6	unassociated	Escherichia coli	EAEC	Canada	O111:H21	43	2011/12/25	fruit
+sample	outbreak	organism	subtype	country	serovar	age	date	source	special
+S1	1	Escherichia coli	EHEC/STEC	Canada	O157:H7	21	2024/05/30	beef	true
+S2	1	Escherichia coli	EHEC/STEC	The United States	O157:H7	55	2024/05/21	milk	false
+S3	2	Escherichia coli	EPEC	France	O125	14	2024/04/30	cheese	true
+S4	2	Escherichia coli	EPEC	France	O125	35	2024/04/22	cheese	true
+S5	3	Escherichia coli	EAEC	Canada	O126:H27	61	2012/09/01	milk	false
+S6	unassociated	Escherichia coli	EAEC	Canada	O111:H21	43	2011/12/25	fruit	false

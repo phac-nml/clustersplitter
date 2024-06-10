@@ -16,7 +16,8 @@
             "serovar":{"data_type": "categorical","label":"Serovar","default":"","display":"True"},
             "age":{"data_type": "desc_stats","label":"Patient Age (years)","default":"","display":"True"},
             "date":{"data_type": "min_max","label":"Date","default":"","display":"True"},
-            "source":{"data_type": "categorical","label":"Source Type","default":"","display":"True"}
+            "source":{"data_type": "categorical","label":"Source Type","default":"","display":"True"},
+            "special":{"data_type": "categorical","label":"Special","default":"","display":"True"}
         },
 
         "linelist_columns":{
@@ -28,6 +29,7 @@
             "serovar":{"data_type": "categorical","label":"Serovar","default":"","display":"True"},
             "age":{"data_type": "desc_stats","label":"Patient Age (years)","default":"","display":"True"},
             "date":{"data_type": "min_max","label":"Date","default":"","display":"True"},
-            "source":{"data_type": "categorical","label":"Source Type","default":"","display":"True"}
+            "source":{"data_type": "categorical","label":"Source Type","default":"","display":"True"},
+            "special":{"data_type": "categorical","label":"Special","default":"","display":"True"}
         }    
     }
