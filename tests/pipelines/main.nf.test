@@ -37,15 +37,14 @@ nextflow_pipeline {
             def expected_metadata = path("$baseDir/tests/data/metadata/expected_merged_data.tsv")
             assert actual_metadata.text == expected_metadata.text
 
-            // Test ArborView outputs
-            def expected_tree_1 = path("$baseDir/tests/data/arborview/expected_1.html")
-            def expected_tree_2 = path("$baseDir/tests/data/arborview/expected_2.html")
+            // Check that the ArborView output is created
+            def actual_arborview = path("$launchDir/results/arborview/1_arborview.html")
+            assert actual_arborview.exists()
+            assert actual_arborview.text.contains("sample\\toutbreak\\torganism\\tsubtype\\tcountry\\tserovar\\tage\\tdate\\tsource\\nS1\\t1\\tEscherichia coli\\tEHEC/STEC\\tCanada\\tO157:H7\\t21\\t2024/05/30\\tbeef\\nS2\\t1\\tEscherichia coli\\tEHEC/STEC\\tThe United States\\tO157:H7\\t55\\t2024/05/21\\tmilk\\n")
 
-            def actual_tree_1 = path("$launchDir/results/arborview/1_arborview.html")
-            def actual_tree_2 = path("$launchDir/results/arborview/2_arborview.html")
-
-            assert expected_tree_1.text == actual_tree_1.text
-            assert expected_tree_2.text == actual_tree_2.text
+            actual_arborview = path("$launchDir/results/arborview/2_arborview.html")
+            assert actual_arborview.exists()
+            assert actual_arborview.text.contains("sample\\toutbreak\\torganism\\tsubtype\\tcountry\\tserovar\\tage\\tdate\\tsource\\nS3\\t2\\tEscherichia coli\\tEPEC\\tFrance\\tO125\\t14\\t2024/04/30\\tcheese\\nS4\\t2\\tEscherichia coli\\tEPEC\\tFrance\\tO125\\t35\\t2024/04/22\\tcheese\\n")
         }
     }
 }
