@@ -17,7 +17,6 @@ include { paramsSummaryLog; paramsSummaryMap; fromSamplesheet  } from 'plugin/nf
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 
-include { IRIDA_NEXT_OUTPUT    } from '../modules/local/iridanextoutput/main'
 include { LOCIDEX_MERGE } from '../modules/local/locidex/merge/main'
 include { MAP_TO_TSV } from '../modules/local/map_to_tsv.nf'
 include { ARBORATOR } from '../modules/local/arborator/main'
