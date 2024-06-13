@@ -21,6 +21,7 @@ include { LOCIDEX_MERGE } from '../modules/local/locidex/merge/main'
 include { MAP_TO_TSV } from '../modules/local/map_to_tsv.nf'
 include { ARBORATOR } from '../modules/local/arborator/main'
 include { ARBOR_VIEW } from '../modules/local/arborview'
+include { BUILD_CONFIG } from '../modules/local/buildconfig/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,7 +64,7 @@ workflow CLUSTER_SPLITTER {
     // NB: `input` corresponds to `params.input` and associated sample sheet schema
     input = Channel.fromSamplesheet("input")
 
-    metadata_headers = Channel.of(
+    metadata_headers = Channel.value(
         tuple(
             ID_COLUMN, params.metadata_partition_name,
             params.metadata_1_header, params.metadata_2_header,
@@ -84,11 +85,7 @@ workflow CLUSTER_SPLITTER {
     ch_versions = ch_versions.mix(profiles_merged.versions)
 
     merged_metadata = MAP_TO_TSV(metadata_headers, metadata_rows).tsv_path
-
-    arborator_config = file(params.ar_config)
-    if(!arborator_config.exists()){
-        error("The Arborator config file ${params.ar_config} does not exist.")
-    }
+    arborator_config = BUILD_CONFIG(metadata_headers).config
 
     arbys_out = ARBORATOR(
         merged_profiles=profiles_merged.combined_profiles,
