@@ -13,7 +13,6 @@ process LOCIDEX_MERGE {
 
     input:
     path input_values // [file(sample1), file(sample2), file(sample3), etc...]
-    tuple val(column_rename), val(column_new_value)
 
     output:
     path("${combined_dir}/*.tsv"), emit: combined_profiles
@@ -23,8 +22,6 @@ process LOCIDEX_MERGE {
     combined_dir = "merged"
     """
     locidex merge -i ${input_values.join(' ')} -o ${combined_dir}
-
-    sed -i 's/$column_rename/$column_new_value/1' ${combined_dir}/*.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

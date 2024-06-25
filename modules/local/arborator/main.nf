@@ -23,6 +23,12 @@ process ARBORATOR {
     output:
     path("${prefix}/*/tree.nwk"), emit: trees, optional: true
     path("${prefix}/*/metadata.tsv"), emit: metadata, optional: true
+    path("${prefix}/*/clusters.tsv"), emit: clusters_tsv, optional: true
+    path("${prefix}/*/loci.summary.tsv"), emit: loci_summary, optional: true
+    path("${prefix}/*/matrix.pq"), emit: matrix_pq, optional: true
+    path("${prefix}/*/matrix.tsv"), emit: matrix_tsv, optional: true
+    path("${prefix}/*/outliers.tsv"), emit: outliers, optional: true
+    path("${prefix}/*/profile.tsv"), emit: profiles, optional: true
     path("${prefix}/cluster_summary.tsv"), emit: cluster_summary
     path("${prefix}/metadata.excluded.tsv"), emit: metadata_exluded
     path("${prefix}/metadata.included.tsv"), emit: metadata_included

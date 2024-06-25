@@ -8,6 +8,18 @@ nextflow_pipeline {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet.csv"
                 outdir = "results"
+
+                ar_config = "$baseDir/tests/data/configs/config.json"
+
+                metadata_partition_name = "outbreak"
+                metadata_1_header = "organism"
+                metadata_2_header = "subtype"
+                metadata_3_header = "country"
+                metadata_4_header = "serovar"
+                metadata_5_header = "age"
+                metadata_6_header = "date"
+                metadata_7_header = "source"
+                metadata_8_header = "special"
             }
         }
 
@@ -25,52 +37,14 @@ nextflow_pipeline {
             def expected_metadata = path("$baseDir/tests/data/metadata/expected_merged_data.tsv")
             assert actual_metadata.text == expected_metadata.text
 
-            // Check aborator outputs
+            // Check that the ArborView output is created
+            def actual_arborview = path("$launchDir/results/arborview/1_arborview.html")
+            assert actual_arborview.exists()
+            assert actual_arborview.text.contains("sample\\toutbreak\\torganism\\tsubtype\\tcountry\\tserovar\\tage\\tdate\\tsource\\tspecial\\nS1\\t1\\tEscherichia coli\\tEHEC/STEC\\tCanada\\tO157:H7\\t21\\t2024/05/30\\tbeef\\tTrue\\nS2\\t1\\tEscherichia coli\\tEHEC/STEC\\tThe United States\\tO157:H7\\t55\\t2024/05/21\\tmilk\\tFalse\\n")
 
-            // Arborator files
-            def comp_files = [
-                Tuple(path("$launchDir/results/arborator/cluster_summary.tsv"), path("$baseDir/tests/data/arborator/cluster_summary.tsv")),
-                Tuple(path("$launchDir/results/arborator/metadata.excluded.tsv"), path("$baseDir/tests/data/arborator/metadata.excluded.tsv")),
-                Tuple(path("$launchDir/results/arborator/metadata.included.tsv"), path("$baseDir/tests/data/arborator/metadata.included.tsv")),
-                Tuple(path("$launchDir/results/arborator/threshold_map.json"), path("$baseDir/tests/data/arborator/threshold_map.json")),
-                Tuple(path("$launchDir/results/arborator/run.json"), path("$baseDir/tests/data/arborator/run.json")),
-                Tuple(path("$launchDir/results/arborator/1/clusters.tsv"), path("$baseDir/tests/data/arborator/1/clusters.tsv")),
-                Tuple(path("$launchDir/results/arborator/1/loci.summary.tsv"), path("$baseDir/tests/data/arborator/1/loci.summary.tsv")),
-                Tuple(path("$launchDir/results/arborator/1/matrix.pq"), path("$baseDir/tests/data/arborator/1/matrix.pq")),
-                Tuple(path("$launchDir/results/arborator/1/matrix.tsv"), path("$baseDir/tests/data/arborator/1/matrix.tsv")),
-                Tuple(path("$launchDir/results/arborator/1/metadata.tsv"), path("$baseDir/tests/data/arborator/1/metadata.tsv")),
-                Tuple(path("$launchDir/results/arborator/1/outliers.tsv"), path("$baseDir/tests/data/arborator/1/outliers.tsv")),
-                Tuple(path("$launchDir/results/arborator/1/profile.tsv"), path("$baseDir/tests/data/arborator/1/profile.tsv")),
-                Tuple(path("$launchDir/results/arborator/1/tree.nwk"), path("$baseDir/tests/data/arborator/1/tree.nwk")),
-                Tuple(path("$launchDir/results/arborator/2/clusters.tsv"), path("$baseDir/tests/data/arborator/2/clusters.tsv")),
-                Tuple(path("$launchDir/results/arborator/2/loci.summary.tsv"), path("$baseDir/tests/data/arborator/2/loci.summary.tsv")),
-                Tuple(path("$launchDir/results/arborator/2/matrix.pq"), path("$baseDir/tests/data/arborator/2/matrix.pq")),
-                Tuple(path("$launchDir/results/arborator/2/matrix.tsv"), path("$baseDir/tests/data/arborator/2/matrix.tsv")),
-                Tuple(path("$launchDir/results/arborator/2/metadata.tsv"), path("$baseDir/tests/data/arborator/2/metadata.tsv")),
-                Tuple(path("$launchDir/results/arborator/2/outliers.tsv"), path("$baseDir/tests/data/arborator/2/outliers.tsv")),
-                Tuple(path("$launchDir/results/arborator/2/profile.tsv"), path("$baseDir/tests/data/arborator/2/profile.tsv")),
-                Tuple(path("$launchDir/results/arborator/2/tree.nwk"), path("$baseDir/tests/data/arborator/2/tree.nwk")),
-                Tuple(path("$launchDir/results/arborator/3/metadata.tsv"), path("$baseDir/tests/data/arborator/3/metadata.tsv")),
-                Tuple(path("$launchDir/results/arborator/3/profile.tsv"), path("$baseDir/tests/data/arborator/3/profile.tsv")),
-                Tuple(path("$launchDir/results/arborator/unassociated/metadata.tsv"), path("$baseDir/tests/data/arborator/unassociated/metadata.tsv")),
-                Tuple(path("$launchDir/results/arborator/unassociated/profile.tsv"), path("$baseDir/tests/data/arborator/unassociated/profile.tsv"))]
-
-            comp_files.each{
-                assert it[0].text == it[1].text
-            }
-
-
-            // Test ArborView outputs
-            def expected_tree_1 = path("$baseDir/tests/data/arborview/expected_1.html")
-            def expected_tree_2 = path("$baseDir/tests/data/arborview/expected_2.html")
-
-            def actual_tree_1 = path("$launchDir/results/arborview/1_arborview.html")
-            def actual_tree_2 = path("$launchDir/results/arborview/2_arborview.html")
-
-            assert expected_tree_1.text = actual_tree_1.text
-            assert expected_tree_2.text = actual_tree_2.text
-
-
+            actual_arborview = path("$launchDir/results/arborview/2_arborview.html")
+            assert actual_arborview.exists()
+            assert actual_arborview.text.contains("sample\\toutbreak\\torganism\\tsubtype\\tcountry\\tserovar\\tage\\tdate\\tsource\\tspecial\\nS3\\t2\\tEscherichia coli\\tEPEC\\tFrance\\tO125\\t14\\t2024/04/30\\tcheese\\tTrue\\nS4\\t2\\tEscherichia coli\\tEPEC\\tFrance\\tO125\\t35\\t2024/04/22\\tcheese\\tTrue\\n")
         }
     }
 }

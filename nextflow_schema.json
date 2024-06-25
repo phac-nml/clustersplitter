@@ -5,6 +5,34 @@
     "description": "IRIDA Next Example Pipeline",
     "type": "object",
     "definitions": {
+        "arborview": {
+            "title": "ArborView",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "av_html": {
+                    "type": "string",
+                    "default": "assets/ArborView.html"
+                }
+            }
+        },
+        "arborator": {
+            "title": "Arborator",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "ar_config": {
+                    "type": "string",
+                    "default": "tests/data/configs/config.json"
+                },
+                "ar_thresholds": {
+                    "type": "string",
+                    "default": "10,9,8,7,6,5,4,3,2,1"
+                }
+            }
+        },
         "input_output_options": {
             "title": "Input/output options",
             "type": "object",
@@ -59,6 +87,77 @@
                 }
             }
         },
+        "metadata": {
+            "title": "Metadata",
+            "type": "object",
+            "description": "The column header names of the metadata columns.",
+            "default": "",
+            "properties": {
+                "metadata_partition_name": {
+                    "type": "string",
+                    "default": "outbreak",
+                    "description": "The column used to partition clusters. All samples with the same value in this column will be partitioned into the same group.",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_1_header": {
+                    "type": "string",
+                    "default": "metadata_1",
+                    "description": "The header name of metadata column 1.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_2_header": {
+                    "type": "string",
+                    "default": "metadata_2",
+                    "description": "The header name of metadata column 2.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_3_header": {
+                    "type": "string",
+                    "default": "metadata_3",
+                    "description": "The header name of metadata column 3.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_4_header": {
+                    "type": "string",
+                    "default": "metadata_4",
+                    "description": "The header name of metadata column 4.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_5_header": {
+                    "type": "string",
+                    "default": "metadata_5",
+                    "description": "The header name of metadata column 5.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_6_header": {
+                    "type": "string",
+                    "default": "metadata_6",
+                    "description": "The header name of metadata column 6.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_7_header": {
+                    "type": "string",
+                    "default": "metadata_7",
+                    "description": "The header name of metadata column 7.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                },
+                "metadata_8_header": {
+                    "type": "string",
+                    "default": "metadata_8",
+                    "description": "The header name of metadata column 8.",
+                    "fa_icon": "far fa-sticky-note",
+                    "pattern": "^[^\\n\\t\"]+$"
+                }
+            },
+            "fa_icon": "far fa-clipboard"
+        },
         "institutional_config_options": {
             "title": "Institutional config options",
             "type": "object",
@@ -102,7 +201,7 @@
                 "max_cpus": {
                     "type": "integer",
                     "description": "Maximum number of CPUs that can be requested for any single job.",
-                    "default": 16,
+                    "default": 4,
                     "fa_icon": "fas fa-microchip",
                     "hidden": true,
                     "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
@@ -110,7 +209,7 @@
                 "max_memory": {
                     "type": "string",
                     "description": "Maximum amount of memory that can be requested for any single job.",
-                    "default": "128.GB",
+                    "default": "2.GB",
                     "fa_icon": "fas fa-memory",
                     "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
                     "hidden": true,
@@ -119,7 +218,7 @@
                 "max_time": {
                     "type": "string",
                     "description": "Maximum amount of time that can be requested for any single job.",
-                    "default": "240.h",
+                    "default": "1.h",
                     "fa_icon": "far fa-clock",
                     "pattern": "^(\\d+\\.?\\s*(s|m|h|d|day)\\s*)+$",
                     "hidden": true,
@@ -215,7 +314,16 @@
     },
     "allOf": [
         {
+            "$ref": "#/definitions/arborview"
+        },
+        {
+            "$ref": "#/definitions/arborator"
+        },
+        {
             "$ref": "#/definitions/input_output_options"
+        },
+        {
+            "$ref": "#/definitions/metadata"
         },
         {
             "$ref": "#/definitions/institutional_config_options"

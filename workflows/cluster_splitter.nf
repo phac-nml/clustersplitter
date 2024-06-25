@@ -41,23 +41,6 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 */
 
 
-
-def prepareFilePath(String filep, GString debug_msg){
-    // Rerturns null if a file is not valid
-    def return_path = null
-    if(filep){
-        file_in = file(filep) // for some reason using path here does not work, but file does...
-        if(file_in.exists()){
-            return_path = file_in
-            log.debug debug_msg
-        }
-    }else{
-        return_path = []
-    }
-
-    return return_path // empty value if file argument is null
-}
-
 workflow CLUSTER_SPLITTER {
 
     /*
@@ -73,11 +56,7 @@ workflow CLUSTER_SPLITTER {
     Partition column (PARTITION_COLUMN) is set to the first metadata field in the defined in nextflow_schema.json.
     as it is a string constant it will be listed here and it is marked as mandatory.
     */
-    ID_COLUMN = "id"
-    REPLACE_ID_NAME = "sample_id"
-    PARTITION_COLUMN = "md_1"
-
-
+    ID_COLUMN = "sample"
 
     ch_versions = Channel.empty()
 
@@ -85,22 +64,31 @@ workflow CLUSTER_SPLITTER {
     // NB: `input` corresponds to `params.input` and associated sample sheet schema
     input = Channel.fromSamplesheet("input")
 
-    // Merge allele profiles
-    replace_vals = Channel.value(tuple(REPLACE_ID_NAME, ID_COLUMN))
+    metadata_headers = Channel.of(
+        tuple(
+            ID_COLUMN, params.metadata_partition_name,
+            params.metadata_1_header, params.metadata_2_header,
+            params.metadata_3_header, params.metadata_4_header,
+            params.metadata_5_header, params.metadata_6_header,
+            params.metadata_7_header, params.metadata_8_header)
+        )
+
+    metadata_rows = input.map{
+        meta, mlst_files -> tuple(meta.id, meta.metadata_partition,
+        meta.metadata_1, meta.metadata_2, meta.metadata_3, meta.metadata_4,
+        meta.metadata_5, meta.metadata_6, meta.metadata_7, meta.metadata_8)
+    }.toList()
 
     profiles_merged = LOCIDEX_MERGE(input.map{
         meta, alleles -> alleles
-    }.collect(), replace_vals)
+    }.collect())
     ch_versions = ch_versions.mix(profiles_merged.versions)
 
-    merged_metadata = MAP_TO_TSV(input.map {
-        meta, alleles -> meta
-    }.collect())
+    merged_metadata = MAP_TO_TSV(metadata_headers, metadata_rows).tsv_path
 
-
-    arborator_config = prepareFilePath(params.ar_config, "Selecting ${params.ar_config} for --ar_config")
-    if(!arborator_config){
-        exit 1, "${params.ar_config} does not exist. Exiting the pipeline now"
+    arborator_config = file(params.ar_config)
+    if(!arborator_config.exists()){
+        error("The Arborator config file ${params.ar_config} does not exist.")
     }
 
     arbys_out = ARBORATOR(
@@ -108,7 +96,7 @@ workflow CLUSTER_SPLITTER {
         metadata=merged_metadata,
         configuration_file=arborator_config,
         id_column=ID_COLUMN,
-        partition_col=PARTITION_COLUMN,
+        partition_col=params.metadata_partition_name,
         thresholds=params.ar_thresholds)
 
     ch_versions = ch_versions.mix(arbys_out.versions)
@@ -125,33 +113,11 @@ workflow CLUSTER_SPLITTER {
     tree_html = file(params.av_html)
     ARBOR_VIEW(trees_meta, tree_html)
 
-
-    //IRIDA_NEXT_OUTPUT (
-    //    samples_data=ch_simplified_jsons
-    //)
-    //ch_versions = ch_versions.mix(IRIDA_NEXT_OUTPUT.out.versions)
-
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
 }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.dump_parameters(workflow, params)
-    NfcoreTemplate.summary(workflow, params, log)
-    if (params.hook_url) {
-        NfcoreTemplate.IM_notification(workflow, params, summary_params, projectDir, log)
-    }
-}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

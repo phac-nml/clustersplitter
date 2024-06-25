@@ -1,16 +1,16 @@
 [![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.04.3-brightgreen.svg)](https://www.nextflow.io/)
 
-# Example Pipeline for IRIDA Next
+# clustersplitter (arborator)
 
-This is an example pipeline to be used for integration with IRIDA Next.
+This is a nextflow pipeline implementation of [Arborator](https://github.com/phac-nml/arborator).
 
 # Input
 
 The input to the pipeline is a standard sample sheet (passed as `--input samplesheet.csv`) that looks like:
 
-| sample  | fastq_1         | fastq_2         |
-| ------- | --------------- | --------------- |
-| SampleA | file_1.fastq.gz | file_2.fastq.gz |
+| sample  | mlst_alleles      | metadata_1 | metadata_2 | metadata_3 | metadata_4 | metadata_5 | metadata_6 | metadata_7 | metadata_8 |
+| ------- | ----------------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
+| SampleA | sampleA.mlst.json | meta1      | meta2      | meta3      | meta4      | meta5      | meta6      | meta7      | meta8      |
 
 The structure of this file is defined in [assets/schema_input.json](assets/schema_input.json). Validation of the sample sheet is performed by [nf-validation](https://nextflow-io.github.io/nf-validation/).
 
@@ -25,7 +25,7 @@ Other parameters (defaults from nf-core) are defined in [nextflow_schema.json](n
 To run the pipeline, please do:
 
 ```bash
-nextflow run phac-nml/iridanextexample -profile singularity -r main -latest --input assets/samplesheet.csv --outdir results
+nextflow run phac-nml/clustersplitter -profile singularity -r main -latest --input assets/samplesheet.csv --outdir results
 ```
 
 Where the `samplesheet.csv` is structured as specified in the [Input](#input) section.
@@ -90,12 +90,12 @@ There is also a pipeline execution summary output file provided (specified in th
 To run with the test profile, please do:
 
 ```bash
-nextflow run phac-nml/iridanextexample -profile docker,test -r main -latest --outdir results
+nextflow run phac-nml/clustersplitter -profile docker,test -r main -latest --outdir results
 ```
 
 # Legal
 
-Copyright 2023 Government of Canada
+Copyright 2024 Government of Canada
 
 Licensed under the MIT License (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
